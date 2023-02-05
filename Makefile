@@ -21,13 +21,13 @@ terraform-init:
 		init
 terraform-plan:
 	terraform -chdir=${TERRAFORM_DIR} \
-		plan \
-		-var "app_name=${APP_NAME}"
+		plan
 terraform-apply:
 	terraform -chdir=${TERRAFORM_DIR} \
-		apply \
-		-var "app_name=${APP_NAME}"
-terarform-destroy:
+		apply
+terraform-destroy:
 	terraform -chdir=${TERRAFORM_DIR} \
-		destroy \
-		-var "app_name=${APP_NAME}"
+		destroy
+terraform-output:
+	terraform -chdir=${TERRAFORM_DIR} \
+		output
