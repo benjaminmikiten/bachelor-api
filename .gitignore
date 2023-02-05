@@ -41,3 +41,6 @@ lerna-debug.log*
 .terraform
 *.tfstate
 *.tfstate.backup
+
+# Postgres db
+db
