@@ -9,3 +9,66 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Player {
+  id                String             @id @unique @default(cuid())
+  firstName         String
+  lastName          String
+  dateOfBirth       DateTime
+  // players were born in a location
+  birthplaceId      String
+  birthplace        Location           @relation(fields: [birthplaceId], references: [id])
+
+  occupation        String
+  height            Int
+  gender            String
+  // a player has many roles by seasons
+  playerSeasonRoles PlayerSeasonRole[]
+}
+
+model Location {
+  id        String   @id @unique @default(cuid())
+  city      String
+  state     String
+  country   String
+  // Locations can be the birthplace of many players
+  players   Player[]
+}
+
+model Series {
+  id        String   @id @unique @default(cuid())
+  title     String   @unique
+  cancelled Boolean
+  // a series has many seasons
+  seasons   Season[]
+}
+
+model Season {
+  id                String             @id @unique @default(cuid())
+  number            Int
+  firstAired        DateTime
+  lastAired         DateTime
+  // a season belongs to a series
+  seriesId          String
+  series            Series             @relation(fields: [seriesId], references: [id])
+  // a season has many roles by players
+  playerSeasonRoles PlayerSeasonRole[]
+}
+
+model PlayerSeasonRole {
+  id       String     @id @unique @default(cuid())
+  // a player season role belongs to a player
+  playerId String
+  player   Player     @relation(fields: [playerId], references: [id])
+  // a player season role belongs to a season
+  seasonId String
+  season   Season     @relation(fields: [seasonId], references: [id])
+  // a player season role has a role
+  role     SeasonRole
+}
+
+enum SeasonRole {
+  PLAYER
+  LEAD
+  HOST
+}
